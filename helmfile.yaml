@@ -1,0 +1,33 @@
+# helmfile.yaml
+repositories:
+  - name: argo
+    url: https://argoproj.github.io/argo-helm
+
+apiVersions:
+  - monitoring.coreos.com/v1
+
+releases:
+- name: create-certs
+  namespace: default
+  chart: ./certs
+- name: ingress
+  chart: ./ingress
+- name: argocd
+  namespace: argocd
+  chart: argo/argo-cd
+- name: kargo
+  namespace: kargo
+  createNamespace: true
+  chart: oci://ghcr.io/akuity/kargo-charts/kargo
+  version: 1.4.4
+  set:
+  - name: api.adminAccount.passwordHash
+    value: "$2y$10$RZtCHiQbYjJ3N22P0qvxLOQuxPgYhO7dooSnKB.vq95auK4fLn0fS"
+  - name: api.adminAccount.tokenSigningKey
+    value: "rsQGhNEeGEpuBf9dwOjLD1xCRNeHXSKL"
+- name: kargo-config
+  chart: ./kargo
+  installed: false
+- name: argocd-config
+  chart: ./argocd
+  installed: false
