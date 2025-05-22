@@ -3,6 +3,14 @@ kind: Kustomization
 
 resources:
 - ../../base
-- guestbook-ingress-patch.yaml
 
 namespace: guestbook-prod-central
+
+patches:
+  - target:
+      kind: Ingress
+      name: guestbook
+    patch: |-
+      - op: replace
+        path: /spec/rules/0/host
+        value: guestbook-prod-central.local.amazinglyabstract.it
