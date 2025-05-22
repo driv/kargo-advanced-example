@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: guestbook
+  namespace: guestbook-staging
+spec:
+  rules:
+  - host: guestbook-staging.local.amazinglyabstract.it
+    http:
+      paths:
+      - backend:
+          service:
+            name: guestbook
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
